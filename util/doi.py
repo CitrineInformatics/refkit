@@ -38,4 +38,4 @@ def _validateStart(value, match):
 # This looks for patterns starting with '10.', followed by a series of integers and periods, followed by a backslash,
 # followed by a series of alphanumeric values, backslashes, periods, parentheses, and hyphens. The matching string is
 # saved in a group named 'doi'.
-_doiRegex = re.compile('(?P<doi>10\.[0-9\.]+/[\w\.\-/\(\):]+)')
+_doiRegex = re.compile('(?P<doi>10\.[0-9\.]+/[\w\.\-/\(\):\+]+)')
