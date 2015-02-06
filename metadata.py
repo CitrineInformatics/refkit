@@ -38,6 +38,61 @@ class Metadata(object):
         self.pageStart = ''
         self.pageEnd   = ''
     
+    def getDataFromUser(self):
+        """
+        Set the content of this object based on information from the user.
+        """
+        self.getValueFromUser('doi')
+        self.getValueFromUser('isbn')
+        self.getValueFromUser('issn')
+        self.getValueFromUser('url')
+        self.getValueFromUser('publisher')
+        self.getValueFromUser('title')
+        self.getValueFromUser('edition')
+        self.getValueFromUser('journal')
+        self.getValueFromUser('volume')
+        self.getValueFromUser('issue')
+        self.getValueFromUser('year')
+        self.getValueFromUser('pageStart')
+        self.getValueFromUser('pageEnd')
+        self.getPeopleFromUser('author')
+        self.getPeopleFromUser('editor')
+    
+    def getValueFromUser(self, field):
+        """
+        Prompt the user for a field value.
+        
+        :param field: Name of the field to get from the user.
+        """
+        setattr(self, field, raw_input(field + ': '))
+    
+    def getPeopleFromUser(self, field):
+        """
+        Prompt the user for a list of names.
+        
+        :param field: Name of the field to save the name in.
+        """
+        nameList = []
+        while (True):
+            res = self.getPersonFromUser(field)
+            if res is None:
+                break
+            else:
+                nameList.append(res)
+        setattr(self, field, nameList)
+    
+    def getPersonFromUser(self, field):
+        """
+        Prompt the user for a name.
+        
+        :param field: Name of the field to save the name in.
+        :returns: Dictionary with givenName and familyName or None if no value was entered.
+        """
+        res = {}
+        res['givenName'] = raw_input(field + ' given name: ')
+        res['familyName'] = raw_input(field + ' family name: ')
+        return res if len(res['familyName']) != 0 else None
+    
     def tidy(self):
         """
         Tidy values in self object by removing newlines and extra whitespace.
@@ -323,7 +378,7 @@ class Metadata(object):
         
         :param values: List of values to add to
         """
-        pages = self._getPagesAsString()
+        pages = self._getPagesAsString(False)
         if len(pages):
             values.append(pages)
     

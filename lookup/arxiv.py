@@ -4,7 +4,7 @@ Functions for working with the arXiv.org api.
 
 import urllib
 import requests
-from xml.etree        import ElementTree
+from xml.etree       import ElementTree
 from refkit.util     import arxivid
 from refkit.metadata import Metadata
 from refkit.format   import author

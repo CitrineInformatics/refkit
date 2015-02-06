@@ -7,7 +7,7 @@ import sys
 import urllib
 import requests
 import unicodedata
-from operator         import itemgetter
+from operator        import itemgetter
 from refkit.util     import doi
 from refkit.util     import isbn
 from refkit.util     import citation
@@ -138,9 +138,6 @@ def _getBestQueryResult(lookup, queryResults, autoSaveMinimum, autoSaveMaximum):
     :returns: Best match that was found or None if a viable match was not found
     """
     results = [ (citation.overlap(lookup, i['fullCitation']), i) for i in queryResults ]
-    
-    print [ i[0] for i in results ]
-    
     results = sorted(results, key = itemgetter(0), reverse = True)
     if len(results) == 1 and results[0][0] >= autoSaveMinimum:
         return results[0][1]
@@ -184,6 +181,14 @@ def _promptForBestResult(lookup, queryResults):
     except KeyboardInterrupt:
         print ''
         sys.exit(1)
+
+def _askForManualEntry(lookup):
+    """
+    Prompt the user to input the metadata themselves.
+    
+    :param lookup: String with the lookup being searched for.
+    :returns: Object with the user entered information or None if they chose not to enter it.
+    """
 
 def _saveMetadata(data):
     """

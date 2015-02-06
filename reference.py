@@ -66,4 +66,28 @@ def _getMetadataFromCrossref(input, existingMetadata, autoSaveMinimum, autoSaveM
     try:
         return [ crossref.search(input, autoSaveMinimum, autoSaveMaximum) ]
     except Exception:
-        return []
+        return _promptForManualEntry(input)
+
+def _promptForManualEntry(input):
+    """
+    Ask the user if they want to manual set the metadata for the object.
+    
+    :param input: String with the reference data being searched for.
+    :returns: Metadata object with the information that was gathered or emtpy array.
+    """
+    print ''
+    print 'LOOKUP STRING: ' + input
+    return [] if _getResponse('Do you want to manually set the information [y/n]: ') == 'n' else \
+        [ Metadata().getDataFromUser() ]
+
+def _getResponse(message):
+    """
+    Get a y/n response from the user.
+    
+    :param message: Message to print to the user.
+    :returns: Response from the user.
+    """
+    res = ''
+    while res != 'y' and res != 'n':
+        res = raw_input(message)
+    return res
