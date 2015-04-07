@@ -82,6 +82,8 @@ def _saveMetadataFromEntry(entry):
     _saveYear(metadata, entry)
     _saveAuthors(metadata, entry)
     metadata.tidy()
+    if len(metadata.author) == 0 and len(metadata.title) == 0:
+        raise RuntimeError()
     return metadata
 
 def _saveValue(metadata, attribute, entry, tag):

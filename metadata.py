@@ -12,11 +12,27 @@ class Metadata(object):
     Class to store information about a reference.
     """
     
-    def __init__(self):
+    def __init__(self, asDictionary = None):
         """
         Default constructor.
         """
         self.setDefaults()
+        if asDictionary is not None:
+            self.doi       = asDictionary.get('doi',       self.doi)
+            self.isbn      = asDictionary.get('isbn',      self.isbn)
+            self.issn      = asDictionary.get('issn',      self.issn)
+            self.url       = asDictionary.get('url',       self.url)
+            self.author    = asDictionary.get('author',    self.author)
+            self.editor    = asDictionary.get('editor',    self.editor)
+            self.publisher = asDictionary.get('publisher', self.publisher)
+            self.title     = asDictionary.get('title',     self.title)
+            self.edition   = asDictionary.get('edition',   self.edition)
+            self.journal   = asDictionary.get('journal',   self.journal)
+            self.volume    = asDictionary.get('volume',    self.volume)
+            self.issue     = asDictionary.get('issue',     self.issue)
+            self.year      = asDictionary.get('year',      self.year)
+            self.pageStart = asDictionary.get('pageStart', self.pageStart)
+            self.pageEnd   = asDictionary.get('pageEnd',   self.pageEnd)
     
     def setDefaults(self):
         """
@@ -57,6 +73,7 @@ class Metadata(object):
         self.getValueFromUser('pageEnd')
         self.getPeopleFromUser('author')
         self.getPeopleFromUser('editor')
+        return self
     
     def getValueFromUser(self, field):
         """

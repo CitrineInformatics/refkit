@@ -6,6 +6,8 @@ from refkit.lookup   import arxiv
 from refkit.lookup   import crossref
 from refkit.metadata import Metadata
 
+from refkit.util.doi import extract
+
 def getMetadata(input, autoSaveMinimum = crossref.defAutoSaveMinimum, autoSaveMaximum = crossref.defAutoSaveMaximum):
     """
     Gather metadata for a reference. In some cases it may be possible that multiple Metadata objects are returned.
@@ -63,10 +65,13 @@ def _getMetadataFromCrossref(input, existingMetadata, autoSaveMinimum, autoSaveM
             return [ crossref.search(i.toUnformattedString(), autoSaveMinimum, autoSaveMaximum) ]
         except Exception, e:
             pass
-    try:
-        return [ crossref.search(input, autoSaveMinimum, autoSaveMaximum) ]
-    except Exception:
+    if len(existingMetadata) == 0:
+        try:
+            return [ crossref.search(input, autoSaveMinimum, autoSaveMaximum) ]
+        except:
+            pass
         return _promptForManualEntry(input)
+    return []
 
 def _promptForManualEntry(input):
     """
@@ -77,8 +82,22 @@ def _promptForManualEntry(input):
     """
     print ''
     print 'LOOKUP STRING: ' + input
-    return [] if _getResponse('Do you want to manually set the information [y/n]: ') == 'n' else \
-        [ Metadata().getDataFromUser() ]
+    return [] if _getResponse('Do you want to manually set the information [y/n]: ') == 'n' else _getDataFromUser()
+
+def _getDataFromUser():
+    """
+    Ask the user whether they have a better lookup string.
+    
+    :returns: Metadata object with the information that was gathered or emtpy array.
+    """
+    print ''
+    input = raw_input('Better lookup string: ')
+    res = []
+    if len(input) > 0:
+        res = _getMetadataByLookup(input, crossref.defAutoSaveMinimum, crossref.defAutoSaveMaximum)
+    if len(res) == 0:
+        res = [ Metadata().getDataFromUser() ]
+    return res
 
 def _getResponse(message):
     """
