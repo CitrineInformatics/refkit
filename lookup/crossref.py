@@ -121,7 +121,7 @@ def _runQuery(value):
     try:
         lowercaseCitation = value.lower()
         formattedCitation = urllib.quote_plus(lowercaseCitation)
-        url = 'http://search.crossref.org/dois?q=' + formattedCitation + '&sort=score&page=1&rows=10'
+        url = 'http://search.crossref.org/dois?q=' + formattedCitation + '&sort=score&page=1&rows=10&header=true'
         return requests.get(url).json()
     except Exception:
         raise

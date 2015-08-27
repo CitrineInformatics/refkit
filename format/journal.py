@@ -59,7 +59,7 @@ def _abbreviateSubtitle(name, checkForJournal):
     res = []
     parts = name.split('-')
     for i in parts:
-        res.append(_abbreviateParts(i, (i != parts[0])))
+        res.append(_abbreviateParts(i, True))
     return '-'.join(res)
 
 def _abbreviateParts(name, forcePrintFirst):
@@ -76,7 +76,7 @@ def _abbreviateParts(name, forcePrintFirst):
         try:
             res.append(_abbreviateWord(i).title())
         except Exception,e:
-            if i == parts[-1] or (forcePrintFirst and i == parts[0]):
+            if i is parts[-1] or (forcePrintFirst and i is parts[0]):
                 res.append(i.title())
     return ' '.join(res)
 
